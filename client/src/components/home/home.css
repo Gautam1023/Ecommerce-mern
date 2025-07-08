@@ -1,0 +1,10 @@
+ .home_section {
+     width: 100;
+     position: relative;
+     top: 60px;
+     background-color: beige;
+     min-height: calc(100vh - 60px);
+     border-bottom: 2px solid rgb(red, green, blue);
+     margin-bottom: 10px;
+
+ }
