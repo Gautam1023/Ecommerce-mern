@@ -9,6 +9,7 @@ const SignUp = () => {
         fname: "",
         email: "",
         mobile: "",
+        password: "",
 
         cpassword: ""
 
@@ -27,7 +28,43 @@ const SignUp = () => {
         })
 
 
+    };
+
+    const senddata = async (e) => {
+        e.preventDefault();
+        const { fname, email, mobile, password, cpassword } = udata;
+
+        if (!fname || !email || !password || !cpassword) {
+            alert("All fields are required!");
+            return;
+        }
+
+        const res = await fetch("register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                fname, email, mobile, password, cpassword
+
+            })
+
+        });
+
+        const data = await res.json();
+        //console.log(data);
+
+        if (res.status == 422 || !data) {
+            alert("no data")
+
+
+        } else {
+            alert("Data added Succesfully")
+            setUData({ ...udata, fname: "", email: "", mobile: "", password: "", cpassword: "" });
+        }
     }
+
+
 
 
 
@@ -47,7 +84,8 @@ const SignUp = () => {
 
                 </div>
                 <div className='sign_form'>
-                    <form>
+
+                    <form method='POST'>
                         <h1> Sign - Up</h1>
                         <div className='form_data'>
                             <label htmlFor="fname">Name</label>
@@ -96,7 +134,7 @@ const SignUp = () => {
 
 
 
-                        <button className='signin_btn'>Continue</button>
+                        <button className='signin_btn' onClick={senddata}>Continue</button>
                         <div className="signin_info">
                             <p>
                                 Already Have an Account??

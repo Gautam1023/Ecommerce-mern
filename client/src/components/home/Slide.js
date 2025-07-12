@@ -2,8 +2,9 @@ import React from 'react'
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { Divider } from "@mui/material";
-import { products } from './productdata';
+// import { products } from './productdata';
 import "../home/slide.css";
+import { NavLink } from "react-router-dom";
 
 const responsive = {
     desktop: {
@@ -25,7 +26,7 @@ const responsive = {
 
 
 
-const Slide = ({ title }) => {
+const Slide = ({ title, products }) => {
     return (
         <div className='products_section'>
             <div className="products_deal">
@@ -54,21 +55,28 @@ const Slide = ({ title }) => {
 
                 {
                     products.map((e) => {
+
                         return (
-                            <div className="products_items">
-                                <div className="product_img">
+                            <NavLink to={`/getproductsone/${e.id}`}>
 
 
-                                    <img src={e.url} alt="productItem" />
+
+
+                                <div className="products_items">
+                                    <div className="product_img">
+
+
+                                        <img src={e.url} alt="productItem" />
+                                    </div>
+                                    <p className="products_name"> {e.title.shortTitle}
+
+                                    </p>
+                                    <p className='products_offer'>{e.discount}</p>
+                                    <p className='products_explore'>{e.tagline}</p>
+
+
                                 </div>
-                                <p className="products_name"> {e.title.shortTitle}
-
-                                </p>
-                                <p className='products_offer'>{e.discount}</p>
-                                <p className='products_explore'>{e.tagline}</p>
-
-
-                            </div>
+                            </NavLink>
                         )
                     })
                 }
