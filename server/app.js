@@ -11,8 +11,10 @@ const DefaultData = require("./defaultdata");
 const { join } = require("lodash");
 const cors = require("cors");
 const router = require("./routes/router");
+const cookieParser = require("cookie-parser");
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(cors());
 app.use(router);
 

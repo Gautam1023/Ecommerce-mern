@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import "./signup.css";
 import { NavLink } from 'react-router-dom';
+import { LoginContext } from '../context/ContextProvider';
 
 
 
@@ -12,6 +13,8 @@ const Sign_in = () => {
 
   });
   console.log(logdata);
+
+  const { account, setAccount } = useContext(LoginContext);
 
 
   const adddata = (e) => {
@@ -25,6 +28,46 @@ const Sign_in = () => {
     })
   }
 
+  const senddata = async (e) => {
+    e.preventDefault();
+    const { email, password } = logdata;
+
+    /*if (!fname || !email || !password || !cpassword) {
+        alert("All fields are required!");
+        return;
+    } */
+
+    const res = await fetch("/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email, password
+
+      })
+
+    });
+
+    const data = await res.json();
+    console.log(data);
+
+    if (res.status == 422 || !data) {
+      console.log("Invalid credential")
+      alert("no data")
+
+
+    } else {
+      console.log("Data  valid")
+      setAccount(data)
+      alert("Data valid")
+      setData({ ...logdata, email: "", password: "", });
+    }
+
+
+  }
+
+
   return (
     <section>
       <div className='Sign_contsainer'>
@@ -33,7 +76,7 @@ const Sign_in = () => {
 
         </div>
         <div className='sign_form'>
-          <form>
+          <form method='POST'>
             <h1> Sign In</h1>
             <div className='form_data'>
               <label htmlFor="email">Email</label>
@@ -53,7 +96,7 @@ const Sign_in = () => {
             </div>
 
 
-            <button className='signin_btn'>Continue</button>
+            <button className='signin_btn' onClick={senddata}>Continue</button>
 
 
 

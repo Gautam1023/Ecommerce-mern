@@ -2,6 +2,9 @@ const express = require('express');
 const router = new express.Router();
 const Products = require("../models/productsSchema");
 const USER = require("../models/userSchema");
+const bcrypt = require("bcryptjs");
+const authenticate = require("../middleware/authenticate");
+
 
 // get product data api
 router.get("/getproducts", async (req, res) => {
@@ -79,4 +82,105 @@ router.post("/register", async (req, res) => {
 
     }
 });
+
+
+
+// login user api
+
+router.post("/login", async (req, res) => {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+        return res.status(400).json({ error: "Fill all fields" });
+    }
+
+    try {
+        const userLogin = await USER.findOne({ email: email });
+
+        if (!userLogin) {
+            return res.status(400).json({ error: "Invalid credentials" });
+        }
+
+        const isMatch = await bcrypt.compare(password, userLogin.password);
+
+        // token generate
+        const token = await userLogin.generateAuthtoken();
+        // console.log(token);
+
+        res.cookie("Amazonweb", token, {
+            expires: new Date(Date.now() + 900000),
+            httpOnly: true
+
+        })
+
+
+
+
+
+
+        if (!isMatch) {
+            return res.status(400).json({ error: "Invalid credentials" });
+        }
+
+        // Success
+        res.status(200).json({ message: "Login successful", user: userLogin });
+
+    } catch (error) {
+        console.error("Login error:", error);
+        res.status(500).json({ error: "Server error during login" });
+    }
+});
+
+// adding data into cart
+router.post("/addcart/:id", authenticate, async (req, res) => {
+    try {
+        const { id } = req.params;
+        const cart = await Products.findOne({ id: id });
+        console.log(cart + "cart value");
+
+        const UserContact = await USER.findOne({ _id: req.userID })
+        console.log(UserContact);
+
+        if (UserContact) {
+            const cartData = await UserContact.addcartdata(cart);
+            await UserContact.save();
+            console.log(cartData);
+            res.status(201).json(UserContact);
+        } else {
+            res.status(401).json({ error: "Invalid user" });
+        }
+
+    } catch (error) {
+        res.status(401).json({ error: "Invalid user" });
+
+    }
+})
+
+
+// get cart details
+router.get("/cartdetails",authenticate,async(req,res)=>{
+    try {
+        const buyuser = await USER.findOne({_id:req.userID});
+        res.status(201).json(buyuser);
+    } catch (error) {
+        console.log("error" + error)
+    }
+})
+
+
+// get valid user
+router.get("/validuser",authenticate,async(req,res)=>{
+    try {
+        const validuserone = await USER.findOne({_id:req.userID});
+        res.status(201).json(validuserone);
+    } catch (error) {
+        console.log("error" + error)
+    }
+})
+
+
+//REMOVE IITEM FROM CAER
+
+
+
 module.exports = router;

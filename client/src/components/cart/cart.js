@@ -1,11 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import "./cart.css";
 import { Divider } from '@mui/material';
+import { LoginContext } from '../context/ContextProvider';
 
 const Cart = () => {
 
     const { id } = useParams("");
+
+    const history = useNavigate("");
+
+
+    const { account, setAccount } = useContext(LoginContext)
 
     const [inddata, setInddata] = useState({});
     console.log("Fetched data:", inddata);
@@ -37,7 +43,36 @@ const Cart = () => {
 
     }, [id]);
 
-    console.log("Image URL:", inddata?.detailUrl);
+    // add cart function
+    const addtocart = async (id) => {
+        const checkres = await fetch(`/addcart/${id}`, {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                inddata
+            }),
+            credentials: "include"
+        });
+
+
+        const data1 = await checkres.json();
+        console.log(data1);
+
+        if (checkres.status === 401 || !data1) {
+            alert("user invalid");
+
+        } else {
+          //  alert("data added in cart")
+          history("/buynow")
+            setAccount(data1)
+        }
+
+    }
+
+    // console.log("Image URL:", inddata?.detailUrl);
 
 
 
@@ -53,7 +88,7 @@ const Cart = () => {
                         <img src={inddata.detailUrl} alt="cart" />
                     )}
                     <div className="cart_btn">
-                        <button div className='cart_btn1'> Add to cart</button>
+                        <button div className='cart_btn1' onClick={() => addtocart(inddata.id)}> Add to cart</button>
                         <button div className='cart_btn2'> Buy Now</button>
                     </div>
 
