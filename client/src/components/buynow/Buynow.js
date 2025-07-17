@@ -66,7 +66,7 @@ const Buynow = () => {
                                                         <p className='unusuall'> Usually Dispatched in 8 days</p>
                                                         <p> Eligible for free shipping</p>
                                                         <img src="av.png" alt="" />
-                                                        <Option />
+                                                        <Option deletedata={e?.id} get={getdatabuy} />
 
 
 
@@ -92,7 +92,7 @@ const Buynow = () => {
 
 
                             </div>
-                            <Right iteam={cartdata}/>
+                            <Right iteam={cartdata} />
 
                         </div>
 
