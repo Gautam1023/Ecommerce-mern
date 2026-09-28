@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import "./singnup2.css";
+import API_URL from "../../api";
 import { NavLink } from 'react-router-dom';
 
 const SignUp = () => {
@@ -38,14 +39,13 @@ const SignUp = () => {
             alert("All fields are required!");
             return;
         }
-
-        const res = await fetch("register", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                fname, email, mobile, password, cpassword
+const res = await fetch(`${API_URL}/register`, {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        fname, email, mobile, password, cpassword
 
             })
 

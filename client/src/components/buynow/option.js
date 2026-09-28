@@ -1,4 +1,5 @@
 import { React, useContext } from 'react'
+import API_URL from "../../api";
 import { LoginContext } from '../context/ContextProvider';
 
 const Option = ({ deletedata, get }) => {
@@ -6,15 +7,15 @@ const Option = ({ deletedata, get }) => {
     const { account, setAccount } = useContext(LoginContext);
 
 
-    const removedata = async (req, res) => {
-        try {
-            const res = await fetch(`/remove/${deletedata}`, {
-                method: "DELETE",
-                headers: {
-                    "Accept": "application/json",
-                    "Content-type": "application/json"
-                },
-                credentials: "include"
+  const removedata = async (req, res) => {
+    try {
+        const res = await fetch(`${API_URL}/remove/${deletedata}`, {
+            method: "DELETE",
+            headers: {
+                "Accept": "application/json",
+                "Content-type": "application/json"
+            },
+            credentials: "include"
 
 
             });

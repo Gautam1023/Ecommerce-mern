@@ -1,4 +1,5 @@
 import { React, useContext, useEffect, useState } from 'react';
+import API_URL from "../../api";
 import './Navbar.css';
 import SearchIcon from '@mui/icons-material/Search';
 import Badge from '@mui/material/Badge';
@@ -43,13 +44,16 @@ const Navbar = () => {
 
   const [dropen, setDropen] = useState(false)
 
-  const getdetailvaliduser = async () => {
-    const res = await fetch("/validuser", {
-      method: "GET",
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json"
+ const getdetailvaliduser = async () => {
 
+    const res = await fetch(`${API_URL}/validuser`, {
+
+        method: "GET",
+
+        headers: {
+
+            "Accept": "application/json",
+            "Content-Type": "application/json"
 
       },
       credentials: "include"
@@ -78,13 +82,16 @@ const Navbar = () => {
 
   }
 
-  const logoutuser = async () => {
-    const res2 = await fetch("/logout", {
-      method: "GET",
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json"
+ const logoutuser = async () => {
 
+    const res2 = await fetch(`${API_URL}/logout`, {
+
+        method: "GET",
+
+        headers: {
+
+            "Accept": "application/json",
+            "Content-Type": "application/json"
 
       },
       credentials: "include"

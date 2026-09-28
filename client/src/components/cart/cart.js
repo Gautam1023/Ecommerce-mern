@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import API_URL from "../../api";
 import { useNavigate, useParams } from 'react-router-dom';
 import "./cart.css";
 import { Divider } from '@mui/material';
@@ -17,12 +18,12 @@ const Cart = () => {
     console.log("Fetched data:", inddata);
 
     const getinddata = async () => {
-        const res = await fetch(`/getproductsone/${id}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
+    const res = await fetch(`${API_URL}/getproductsone/${id}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    });
         const data = await res.json();
 
 
@@ -44,12 +45,12 @@ const Cart = () => {
     }, [id]);
 
     // add cart function
-    const addtocart = async (id) => {
-        const checkres = await fetch(`/addcart/${id}`, {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json"
+   const addtocart = async (id) => {
+    const checkres = await fetch(`${API_URL}/addcart/${id}`, {
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
             },
             body: JSON.stringify({
                 inddata

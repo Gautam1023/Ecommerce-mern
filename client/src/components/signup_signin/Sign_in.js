@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react'
+import API_URL from "../../api";
 import "./signup.css";
 import { NavLink } from 'react-router-dom';
 import { LoginContext } from '../context/ContextProvider';
@@ -37,12 +38,15 @@ const Sign_in = () => {
         return;
     } */
 
-    const res = await fetch("/login", {
-      method: "POST",
-      headers: {
+  const res = await fetch(`${API_URL}/login`, {
+
+    method: "POST",
+
+    headers: {
         "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
+    },
+
+    body: JSON.stringify({
         email, password
 
       })

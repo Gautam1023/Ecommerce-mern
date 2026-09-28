@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import API_URL from "../../api";
 import './buynow.css';
 import { Divider } from '@mui/material';
 import Option from './option';
@@ -10,14 +11,20 @@ const Buynow = () => {
     const [cartdata, setCartdata] = useState("");
     // console.log(cartdata.carts)
 
-    const getdatabuy = async () => {
-        const res = await fetch("/cartdetails", {
-            method: "GET",
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json"
-            },
-            credentials: "include"
+   const getdatabuy = async () => {
+
+    const res = await fetch(`${API_URL}/cartdetails`, {
+
+        method: "GET",
+
+        headers: {
+
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+
+        },
+
+        credentials: "include"
         });
 
         const data = await res.json();
